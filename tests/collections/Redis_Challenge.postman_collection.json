@@ -1,0 +1,1032 @@
+{
+	"info": {
+		"_postman_id": "f623d58a-1d30-476d-adc5-bdca08cc8838",
+		"name": "Redis_Challenge",
+		"description": "In the event a valid Push was sent.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Invalid Push - Wrong Method",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fbf42e74-aee5-48ea-919b-e148150a9f65",
+						"exec": [
+							"pm.test(\"Status code is 405\", function () {",
+							"    pm.response.to.have.status(405);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/api/queue/push",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"push"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Valid Push",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f4ff56ac-a6dc-4d80-8430-6bed79310698",
+						"exec": [
+							"pm.test(\"Push 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"msg\":\"Hey Bob! This is Alice sending you a message to tell you that- WAIT.. I feel like someone at some infosec department is reading this..\"}"
+				},
+				"url": {
+					"raw": "localhost:5000/api/queue/push",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"push"
+					]
+				},
+				"description": "Sending a msg to the API"
+			},
+			"response": []
+		},
+		{
+			"name": "Valid Healthcheck",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f4ff56ac-a6dc-4d80-8430-6bed79310698",
+						"exec": [
+							"pm.test(\"Healthcheck 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:5000/api/queue/healthcheck",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"healthcheck"
+					]
+				},
+				"description": "Verifying that Redis works correctly."
+			},
+			"response": []
+		},
+		{
+			"name": "Invalid Push - No Msg",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2aaafecb-3b4e-470a-a33b-b04a304addec",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:5000/api/queue/push",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"push"
+					]
+				},
+				"description": "In the event a push is sent but it contains no message."
+			},
+			"response": []
+		},
+		{
+			"name": "Invalid Push - Wrong Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f4ff56ac-a6dc-4d80-8430-6bed79310698",
+						"exec": [
+							"pm.test(\"Push 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"msg\":\"Hey Bob! This is Alice sending you a message to tell you the MeLi rocks.\"}"
+				},
+				"url": {
+					"raw": "localhost:5000/api/wrong/push",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"wrong",
+						"push"
+					]
+				},
+				"description": "In the event a push is sent to the wrong path"
+			},
+			"response": []
+		},
+		{
+			"name": "Valid Pop",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fd4f90e8-121f-48a5-b27a-0fada99418c7",
+						"exec": [
+							"pm.test(\"Pop 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:5000/api/queue/pop",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"pop"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Valid Count",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fd4f90e8-121f-48a5-b27a-0fada99418c7",
+						"exec": [
+							"pm.test(\"Count 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "localhost:5000/api/queue/count",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invalid Count - Wrong Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fd4f90e8-121f-48a5-b27a-0fada99418c7",
+						"exec": [
+							"pm.test(\"Count 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "localhost:5000/api/wrong/count",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"wrong",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invalid Count - Wrong Method",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fd4f90e8-121f-48a5-b27a-0fada99418c7",
+						"exec": [
+							"pm.test(\"Status code is 405\", function () {",
+							"    pm.response.to.have.status(405);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "localhost:5000/api/queue/count",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invalid Pop - Wrong Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fd4f90e8-121f-48a5-b27a-0fada99418c7",
+						"exec": [
+							"pm.test(\"Pop 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "localhost:5000/api/wrong/pop",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"wrong",
+						"pop"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invalid Pop - Wrong Method",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fd4f90e8-121f-48a5-b27a-0fada99418c7",
+						"exec": [
+							"pm.test(\"Status code is 405\", function () {",
+							"    pm.response.to.have.status(405);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "localhost:5000/api/queue/pop",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"pop"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Metrics commandstats",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "df4c98e5-12da-4075-8d52-af75f06e0ec8",
+						"exec": [
+							"pm.test(\"Metrics 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"command\":\"commandstats\"}"
+				},
+				"url": {
+					"raw": "localhost:5000/api/queue/metrics",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"metrics"
+					]
+				},
+				"description": "Runs redis info commandstats"
+			},
+			"response": []
+		},
+		{
+			"name": "Metrics memory",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "77481dcb-4721-4da0-a10b-f00548f09761",
+						"exec": [
+							"pm.test(\"Metrics 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"command\":\"memory\"}"
+				},
+				"url": {
+					"raw": "localhost:5000/api/queue/metrics",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"metrics"
+					]
+				},
+				"description": "Runs redis info commandstats"
+			},
+			"response": []
+		},
+		{
+			"name": "Metrics stats",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5f7b909e-1b27-4698-83e6-e53a8731b0c4",
+						"exec": [
+							"pm.test(\"Metrics 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"command\":\"stats\"}"
+				},
+				"url": {
+					"raw": "localhost:5000/api/queue/metrics",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"metrics"
+					]
+				},
+				"description": "Runs redis info commandstats"
+			},
+			"response": []
+		},
+		{
+			"name": "Invalid Metrics",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5f7b909e-1b27-4698-83e6-e53a8731b0c4",
+						"exec": [
+							"pm.test(\"Metrics 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"command\":\"invalidcommand\"}"
+				},
+				"url": {
+					"raw": "localhost:5000/api/queue/metrics",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"metrics"
+					]
+				},
+				"description": "Runs redis info commandstats"
+			},
+			"response": []
+		},
+		{
+			"name": "Activate logs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f4ff56ac-a6dc-4d80-8430-6bed79310698",
+						"exec": [
+							"pm.test(\"Activate logs 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"status\":\"activated\"}"
+				},
+				"url": {
+					"raw": "localhost:5000/api/queue/control_logs",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"control_logs"
+					]
+				},
+				"description": "Sending a msg to the API"
+			},
+			"response": []
+		},
+		{
+			"name": "Deactivate logs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f4ff56ac-a6dc-4d80-8430-6bed79310698",
+						"exec": [
+							"pm.test(\"Activate logs 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"status\":\"deactivated\"}"
+				},
+				"url": {
+					"raw": "localhost:5000/api/queue/control_logs",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"control_logs"
+					]
+				},
+				"description": "Sending a msg to the API"
+			},
+			"response": []
+		},
+		{
+			"name": "Invalid - Activate logs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f4ff56ac-a6dc-4d80-8430-6bed79310698",
+						"exec": [
+							"pm.test(\"Activate logs 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"status\":\"adasfctivated\"}"
+				},
+				"url": {
+					"raw": "localhost:5000/api/queue/control_logs",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"control_logs"
+					]
+				},
+				"description": "Sending a msg to the API"
+			},
+			"response": []
+		},
+		{
+			"name": "Activate slowlogs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f4ff56ac-a6dc-4d80-8430-6bed79310698",
+						"exec": [
+							"pm.test(\"Activate slowlogs 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"change\":\"activate\"}"
+				},
+				"url": {
+					"raw": "localhost:5000/api/queue/set_slowlog",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"set_slowlog"
+					]
+				},
+				"description": "Sending a msg to the API"
+			},
+			"response": []
+		},
+		{
+			"name": "Get slowlogs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f4ff56ac-a6dc-4d80-8430-6bed79310698",
+						"exec": [
+							"pm.test(\"get slowlogs 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"command\":\"get\"}"
+				},
+				"url": {
+					"raw": "localhost:5000/api/queue/slowlog",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"slowlog"
+					]
+				},
+				"description": "Sending a msg to the API"
+			},
+			"response": []
+		},
+		{
+			"name": "Length slowlogs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f4ff56ac-a6dc-4d80-8430-6bed79310698",
+						"exec": [
+							"pm.test(\"length slowlogs 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"command\":\"length\"}"
+				},
+				"url": {
+					"raw": "localhost:5000/api/queue/slowlog",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"slowlog"
+					]
+				},
+				"description": "Sending a msg to the API"
+			},
+			"response": []
+		},
+		{
+			"name": "Reset slowlogs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f4ff56ac-a6dc-4d80-8430-6bed79310698",
+						"exec": [
+							"pm.test(\"Reset slowlogs 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"command\":\"reset\"}"
+				},
+				"url": {
+					"raw": "localhost:5000/api/queue/slowlog",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"slowlog"
+					]
+				},
+				"description": "Sending a msg to the API"
+			},
+			"response": []
+		},
+		{
+			"name": "Deactivate slowlogs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f4ff56ac-a6dc-4d80-8430-6bed79310698",
+						"exec": [
+							"pm.test(\"Deactivate slowlogs 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"change\":\"deactivate\"}"
+				},
+				"url": {
+					"raw": "localhost:5000/api/queue/set_slowlog",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"queue",
+						"set_slowlog"
+					]
+				},
+				"description": "Sending a msg to the API"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "2b672213-78f9-438f-af11-dac8309702d5",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "9c3ba459-39fa-40bd-9d58-a5fe2ad9775f",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

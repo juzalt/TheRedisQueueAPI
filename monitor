@@ -1,0 +1,6 @@
+#!/bin/bash
+
+printf "What metrics do you want to see? Available one's are: commandstats, memory, stats\n"
+read setCommand
+curl -i -H "Content-Type: application/json" -X PUT -d '{"command":"'$setCommand'"}' http://localhost:5000/api/queue/metrics
+

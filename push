@@ -1,0 +1,11 @@
+#!/bin/bash
+
+printf "Welcome. Where is the file with the message(s) that you want to send? Examples: batch-push.txt or tests/batch-push.txt\n"
+read file_path
+while IFS="" read -r msg || [ -n "$msg" ]
+do
+	printf '%s\n' "$msg"
+	curl -i -H "Content-Type: application/json" -X POST -d '{"msg":'"\"$msg\""'}' http://localhost:5000/api/queue/push
+done < $file_path
+
+

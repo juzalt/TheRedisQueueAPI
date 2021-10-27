@@ -1,0 +1,11 @@
+#!/bin/bash
+
+printf "What command do you want to send to slowlogs? Available one's are: get, length, reset\n"
+read setCommand
+if [ $setCommand = 'get' ]
+	then
+		printf "How many logs do you wish to receive?\n"
+		read amount
+fi
+curl -i -H "Content-Type: application/json" -X PUT -d '{"command":"'$setCommand'", "amount":"'$amount'"}' http://localhost:5000/api/queue/slowlog
+

@@ -1,0 +1,4 @@
+notes-for-docs.txt
+__pycache__/
+.env
+logfile.txt

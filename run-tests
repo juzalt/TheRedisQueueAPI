@@ -1,0 +1,3 @@
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+sudo docker run --network host -t postman/newman:alpine run https://www.getpostman.com/collections/9b0926932dc78cc2f469 -r cli,json --reporter-json-export "$DIR"/tests-output.json

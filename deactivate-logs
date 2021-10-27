@@ -1,0 +1,2 @@
+#!/bin/bash
+curl -i -H "Content-Type: application/json" -X POST -d '{"status":"deactivated"}' http://localhost:5000/api/queue/control_logs
